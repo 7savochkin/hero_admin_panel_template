@@ -11,6 +11,18 @@
       "name": "Неизвестный герой",
       "description": "Скрывающийся в тени",
       "element": "wind"
+    },
+    {
+      "id": "4a358c59-a7f6-47e9-9fbe-95b324c31f65",
+      "name": "Sergio",
+      "description": "Creating wordpress sites",
+      "element": "earth"
+    },
+    {
+      "id": "a0afdd73-4131-4820-b1e5-7b1c82efa623",
+      "name": "Vlad",
+      "description": "Creating Rest Full applications",
+      "element": "fire"
     }
   ],
   "filters": [
