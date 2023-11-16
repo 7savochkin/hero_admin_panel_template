@@ -6,7 +6,11 @@ import {useState} from "react";
 import {useHttp} from "../../hooks/http.hook";
 
 import {v4 as uuidv4} from 'uuid';
-import {heroesCreating} from "../../actions";
+import {heroesCreating} from "../heroesList/heroesSlice";
+import {selectAll} from "../heroesFilters/filtersSlice";
+import store from "../../store";
+
+// import {heroesCreating} from "../../actions";
 
 
 // Задача для этого компонента:
@@ -25,15 +29,16 @@ const HeroesAddForm = () => {
     const [formSubmit, setFormSubmit] = useState(false),
         [errorSubmit, setErrorSubmit] = useState(false);
 
-    const {filters} = useSelector(state => state.filters);
+    const filters = selectAll(store.getState());
     const dispatch = useDispatch();
     const {request} = useHttp();
+
 
     const cleanElement = (values) => {
         const errors = {},
             value = values.element;
 
-        if (!value || value === "all" || !filters.includes(value)) {
+        if (!value || value === "all" || !filters) {
             errors.element = "Обязательное поле";
         }
         return errors
@@ -41,10 +46,9 @@ const HeroesAddForm = () => {
 
     const renderOptionElements = () => {
         return filters.map((item, ind) => {
-
-            const textContent = getFiltersData(item).textContent
-            if (item !== "all") {
-                return <option key={ind} value={item}>{textContent}</option>
+            const textContent = getFiltersData(item.name).textContent
+            if (item.name !== "all") {
+                return <option key={ind} value={item.name}>{textContent}</option>
             }
         });
     }

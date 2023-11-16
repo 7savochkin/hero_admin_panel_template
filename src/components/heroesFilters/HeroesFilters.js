@@ -1,15 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {useHttp} from "../../hooks/http.hook";
-import {
-    filtersFetching,
-    filtersFetched,
-    filtersFetchingError,
-    filtersSelect,
-    fetchFilters
-} from "../../actions";
+import {filtersSelect, fetchFilters, selectAll} from "./filtersSlice";
 import Spinner from "../spinner/Spinner";
 import getFiltersData from "../../services/FiltersData";
+import store from "../../store";
 
 
 // Задача для этого компонента:
@@ -22,12 +16,14 @@ import getFiltersData from "../../services/FiltersData";
 
 const HeroesFilters = () => {
 
-    const {filters, filtersLoadingStatus, selectedFilter} = useSelector(state => state.filters);
+    const {filtersLoadingStatus, selectedFilter} = useSelector(state => state.filters);
+
+    const filters = selectAll(store.getState());
+
     const dispatch = useDispatch();
-    const {request} = useHttp();
 
     useEffect(()=>{
-        dispatch(fetchFilters(request));
+        dispatch(fetchFilters());
         // eslint-disable-next-line
     }, []);
 
@@ -38,12 +34,12 @@ const HeroesFilters = () => {
     }
 
     const renderBtns = (arr) => {
-        return arr.map((name, ind)=>{
-            const btnData = getFiltersData(name, selectedFilter);
+        return arr.map((item, ind)=>{
+            const btnData = getFiltersData(item.name, selectedFilter);
             return <button
                 key={ind}
                 className={`btn ${btnData.classNameBtn}`}
-                onClick={()=> dispatch(filtersSelect(name))}
+                onClick={()=> dispatch(filtersSelect(item.name))}
             >
                 {btnData.textContent}</button>
         });
